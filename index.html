@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+   
+</head>
+
+<body>
+    <form>
+        <div class="container">
+            <h2 class="showCreators">Creators</h2>
+            <hr/>
+
+            <h3>
+<a class="creators" href="#">Show me the creators</a>
+</h3>
+            <div class="individualDetails" style="display:none">
+
+            </div>
+            <br/>
+            <span id="show" style="display:none"></span>
+
+        </div>
+    </form>
+</body>
+<script>
+    $(document).ready(function() {
+            var jsonp = '[{"Name":"Kaushik Chaubal","Description":"","Image":"https://heroku-starter-app.herokuapp.com/kaushik.png","Title":"Architect","Website":"http://kaushikchaubal.com","Blog":"http://kaushikchaubal.com/","Twitter":"kaushikchaubal","Email":"me@kaushikchaubal.com","Avatar":"https://heroku-starter-app.herokuapp.com/kaushik.png"},{"Name":"Neha Ahuja","Description":"","Image":"https://heroku-starter-app.herokuapp.com/neha.png","Title":"Consultant","Website":"N/A","Blog":"N/A","Twitter":"N/A","Email":"N/A","Avatar":"https://heroku-starter-app.herokuapp.com/neha.png"}]';
+
+            var obj = $.parseJSON(jsonp);
+            var html = '<div class="list-group">';
+            $.each(obj, function() {
+				localStorage.setItem(this['Name'],JSON.stringify(this));
+				
+                html += '<a style="cursor:pointer;" class="list-group-item individual"  name="' + this['Name'] + '"><img src="' + this['Image'] + '" class="img-responsive" style="float:left;" height="35px" width="120px"/> ';
+                html += '<div class="content-heading"><h3>' + this['Name'] + '</h3><h5>' + this['Title'] + '</h5></div>      <p style="clear:both"></p>    </a>';
+
+            });
+            html += '</div>';
+            $('span').html(html);
+
+            $('.creators').click(function() {
+                $('#show').css('display', 'block');
+                $('.creators').css('display', 'none');
+                $('.individualDetails').css('display', 'none');
+            });
+
+            $('.individual').click(function() {
+				var personalData = JSON.parse(localStorage.getItem($(this).attr("name")));
+			    $('.creators').css('display', 'block');
+                $('#show').css('display', 'none');
+                html = '';
+                html += '<img src="' + personalData.Image + '" class="img-responsive"  /> <h2>'+ personalData.Name+'</h2>'+'<h3>'+personalData.Title+'</h3><br/>';
+                html += '<center><br/><br/><br/> <br/><a href="#"><h3>Speak</h3></a>  <br/> <a href="#"><h3>Go to Website</h3></a></center>';
+
+                $('.individualDetails').html(html);
+                $('.individualDetails').css('display', 'block');
+
+            });
+
+            $('.showCreators').click(function() {
+
+                $('.individualDetails').css('display', 'none');
+                $('#show').css('display', 'block');
+
+            });
+
+        }
+
+    );
+
+    $('.showCreators').click(function() {
+
+        $('.individualDetails').css('display', 'none');
+        $('#show').css('display', 'block');
+
+    });
+</script>
+
+</html>
